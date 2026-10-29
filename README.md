@@ -33,7 +33,7 @@ using BlackHole, ffmpeg, mlx-whisper and pyannote.audio.
 ## インストール
 
 ```bash
-git clone https://github.com/masatoshicrypto/meet-autorec.git
+git clone https://github.com/localscribe-dev/meet-autorec.git
 cd meet-autorec
 ./install.sh
 ```
