@@ -9,7 +9,7 @@ using BlackHole, ffmpeg, mlx-whisper and pyannote.audio.
 ## 仕組み
 
 - `micuse` が5秒ごとに「いまマイクを使っているアプリ」を調べる（CoreAudio）
-- Chrome がマイクを使い始めたら録音開始。使わなくなって20秒たったら停止する
+- Chrome か Zoom アプリがマイクを使い始めたら録音開始。使わなくなって20秒たったら停止する
 - 自分の声はマイクから、相手の声は BlackHole（Meet の出力）から、別々のファイルに録る
   - `me.wav`（自分）／ `them.wav`（相手）
 - 停止後、pyannote で話している区間を切り出し、区間ごとに whisper で文字にする
@@ -58,7 +58,7 @@ BlackHole のインストールで Mac のパスワードを聞かれる。
 
 ## 使い方
 
-Chrome で Meet に入るだけ。手動で録る・文字起こしすることもできる。
+Chrome で Meet に入るか、Zoom アプリで会議に入るだけ。Zoom はアプリの「設定 → オーディオ → スピーカー」も 1 で作った装置にしておく。手動で録る・文字起こしすることもできる。
 
 ```bash
 ./rec.sh start 会議名
@@ -72,7 +72,7 @@ Chrome で Meet に入るだけ。手動で録る・文字起こしすること�
 
 `watch.sh` の先頭で変えられる。
 
-- `APP_PATTERN`：録音のきっかけにするアプリ。Chrome 以外のブラウザを使うなら、会議中に `./micuse` を実行し、出てきた ID に合わせる
+- `APP_PATTERN`：録音のきっかけにするアプリ（初期値は Chrome と Zoom アプリ）。ほかのブラウザやアプリを使うなら、会議中に `./micuse` を実行し、出てきた ID に合わせる
 
 ## 注意
 

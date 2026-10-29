@@ -1,12 +1,12 @@
 #!/bin/zsh
-# Chromeがマイクを使い始めたら録音を始め、使い終わって20秒たったら止めて文字起こしする。
+# ChromeかZoomアプリがマイクを使い始めたら録音を始め、使い終わって20秒たったら止めて文字起こしする。
 # install.sh が登録する LaunchAgent から常駐で動く。
 cd ${0:A:h}
 
 # 録音のきっかけにするアプリ（バンドルIDの正規表現）。
 # Chrome以外のブラウザを使うなら、会議中に ./micuse を実行して出てきたIDに合わせる
 
-APP_PATTERN='^com\.google\.Chrome'
+APP_PATTERN='^(com\.google\.Chrome|us\.zoom\.)'
 PYTHON=./.venv/bin/python
 notify() { osascript -e "display notification \"$1\" with title \"Meet録音\" sound name \"Glass\""; }
 
