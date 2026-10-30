@@ -4,6 +4,7 @@
 pyannoteで話している区間を切り出し、区間ごとにwhisperにかける。
 （無音の多い録音を丸ごとwhisperに渡すと、内容が縮んだり抜けたりするため）
 """
+import re
 import sys
 import wave
 from pathlib import Path
@@ -14,6 +15,7 @@ import torch
 from pyannote.audio import Pipeline
 
 MODEL = "mlx-community/whisper-large-v3-turbo"
+HALLUCINATION = re.compile(r"(それでは、?)?(ご視聴ありがとうございました|次回予告|(では|また)次[回の]*(動画)?でお会いしましょう)[。!！]?")
 d = Path(sys.argv[1])
 n_them = int(sys.argv[2]) if len(sys.argv) > 2 else None
 
@@ -51,6 +53,8 @@ def transcribe(name, n, label):
         # 自信の低い部分（雑音から出た意味のない文字列）は捨てる。
         # no_speech_prob はこのモデルだと無音でも0なので使えない
         text = "".join(g["text"] for g in segs if g["avg_logprob"] > -1.0).strip()
+        # 無音や雑音に対して自信満々で出る決まり文句（動画の字幕で学習したため）
+        text = HALLUCINATION.sub("", text).strip()
         if text:
             yield s, label(spk), text
 
