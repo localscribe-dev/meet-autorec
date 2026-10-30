@@ -46,8 +46,11 @@ def transcribe(name, n, label):
     for s, e, spk in chunks(x, n):
         if e - s < 0.5:  # 短すぎる区間はwhisperが幻聴（「ご視聴ありがとうございました」等）を出す
             continue
-        text = mlx_whisper.transcribe(x[int(s * 16000):int(e * 16000)], path_or_hf_repo=MODEL,
-                                      language="ja")["text"].strip()
+        segs = mlx_whisper.transcribe(x[int(s * 16000):int(e * 16000)], path_or_hf_repo=MODEL,
+                                      language="ja")["segments"]
+        # 自信の低い部分（雑音から出た意味のない文字列）は捨てる。
+        # no_speech_prob はこのモデルだと無音でも0なので使えない
+        text = "".join(g["text"] for g in segs if g["avg_logprob"] > -1.0).strip()
         if text:
             yield s, label(spk), text
 
