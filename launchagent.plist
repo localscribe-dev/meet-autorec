@@ -9,6 +9,8 @@
   <dict><key>PATH</key><string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string></dict>
   <key>RunAtLoad</key><true/>
   <key>KeepAlive</key><true/>
+  <!-- 指定しないとlaunchdが優先度を下げ、録音の音声が途中で抜け落ちる -->
+  <key>ProcessType</key><string>Interactive</string>
   <key>StandardErrorPath</key><string>__DIR__/watch.log</string>
   <key>StandardOutPath</key><string>__DIR__/watch.log</string>
 </dict>
